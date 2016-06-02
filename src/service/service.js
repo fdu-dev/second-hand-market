@@ -30,9 +30,9 @@ var item = {
         query.queryString(keyword);
         return query.find().then(function(results) {
             if (results.length > 0) {
-                return _.map(results, function (o)  {
+                return _.uniqBy(_.map(results, function (o)  {
                     return o.get('pubTimeStamp');
-                });
+                }));
 
             } else {
                 return false;
@@ -120,6 +120,7 @@ var item = {
                 return itemQuery.find().then(function(result) {
                     if (result.length > 0) {
                         var item = {
+                            pubTimeStamp: result[0].get('pubTimeStamp'),
                             id: result[0].id,
                             status: result[0].get('status'),
                             images: result[0].get('imgPaths'),
