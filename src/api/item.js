@@ -1,3 +1,5 @@
+var _ = require('lodash');
+var Promise = require('bluebird');
 var service = require('../service/service');
 var moment = require('moment');
 var user = require('./user');
@@ -9,6 +11,37 @@ function sendErr(res, message) {
 }
 
 var item = {
+    // 'api/item/search' GET
+    search: function(req, res) {
+        var get_for_search = function(stamp) {
+            service.item.get(stamp)
+              .then(function(item) {
+                  return item;
+              }, function(err) {
+                  sendErr(res, err);
+              });
+        };
+
+
+        service.item.search(req.query)
+          .then(function(results) {
+              var promise_array = _.map(results,  function (pubTimeStamp) {
+                  return get_for_search(pubTimeStamp);
+              });
+
+              Promise.all(promise_array).then(
+                function(items) {
+                    res.send(items);
+                },
+                function(err) {
+                    sendErr(res, err);
+                }
+              );
+          }, function(err) {
+              sendErr(res, err);
+          });
+    },
+
     // '/api/item/collection' GET
     collection: function(req, res) {
         service.item.collection(req.query)
@@ -47,10 +80,10 @@ var item = {
                     console.log(item);
                     res.send(item);
                 }, function(err) {
-                    sendErr(res, err);;
+                    sendErr(res, err);
                 });
         } else {
-            sendErr(res, 'params error');;
+            sendErr(res, 'params error');
         }
     },
     // '/api/item/equal_to' POST
@@ -60,7 +93,7 @@ var item = {
                 .then(function(result) {
                     res.send(result);
                 }, function(err) {
-                    sendErr(res, err);;
+                    sendErr(res, err);
                 })
         } else {
             sendErr(res, 'params error');
@@ -105,7 +138,7 @@ var item = {
                         })
                     }, function(err) {
                         console.log(err);
-                        sendErr(res, err);;
+                        sendErr(res, err);
                     });
                 } else {
                     sendErr(res, 'auth error');

@@ -18,6 +18,14 @@ angular.module('baseService', [])
                 })
             }
             var item = {
+                search: function(keyword) {
+                    var params = {
+                        keyword: keyword
+                    };
+                    return GET('/api/item/search', params);
+                },
+
+
                 get: function(id) {
                     var params = {
                         id: id
@@ -140,7 +148,7 @@ angular.module('baseService', [])
                 reply: function(params) {
                     return POST('/api/comment/add', params);
                 }
-            }
+            };
             var notification = {
                 getNewNotification: function() {
                     return GET('/api/notification/get_new_notification');
@@ -150,7 +158,7 @@ angular.module('baseService', [])
                         itemID: itemID
                     });
                 }
-            }
+            };
             return {
                 waterfoo: waterfoo,
                 item: item,

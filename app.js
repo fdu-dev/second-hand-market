@@ -24,7 +24,7 @@ app.set('view engine', 'jade');
 app.set('views', './client/src/template');
 
 app.use(compression());
-app.use(morgan('tiny'))
+app.use(morgan('tiny'));
 
 //静态资源
 app.use('/static', express.static('client/build/'));
@@ -56,6 +56,7 @@ app.get('/usermanage/', render.usermanage);
 
 //API
 //商品API
+app.get('/api/item/search', api.item.search);
 app.get('/api/item/collection', api.item.collection);
 app.post('/api/item/publish', api.item.publish);
 app.post('/api/item/equal_to', api.item.equalTo);

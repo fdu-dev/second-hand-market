@@ -1,6 +1,7 @@
+var _ = require('lodash');
 var login = require('./login');
 var mail = require('./mail');
-var comment = require('./commentService')
+var comment = require('./commentService');
 var sms = require('./sms');
 var Promise = require('bluebird');
 var AV = require('avoscloud-sdk');
@@ -21,6 +22,26 @@ setInterval(function() {
 }, 60000);
 
 var item = {
+    search: function(params) {
+        //使用 leancloud 自带的 应用内搜索
+        var keyword = params.keyword;
+        var query = new AV.SearchQuery('Item');
+        query.queryString(keyword);
+        query.find().then(function(results) {
+            if (results.length > 0) {
+                return _.map(results, (o) => {
+                    return o.get('pubTimeStamp');
+                });
+            } else {
+                return false;
+            }
+        }).catch(function(err){
+            //处理 err
+            console.log('error happens in search');
+        });
+    },
+
+
     publish: function(params) {
         var item = new Item();
         params.randomStamp = Math.floor(Math.random() * 10000000000000000);
@@ -55,7 +76,7 @@ var item = {
                                 // 'img/file-123214341' => 'img/small/file-123214341'
                                 var thumbnailPath = path.replace(/img\/file/g,'img/small/file');
                                 thumbnail.push(thumbnailPath);
-                            })
+                            });
                             items.push({
                                 image: object.get('imgPaths'),
                                 thumbnail:thumbnail,
@@ -66,7 +87,7 @@ var item = {
                                 publisher_name: object.get('publisher_name'),
                                 pubTimeStamp: object.get('pubTimeStamp'),
                                 pubTime: moment(parseInt(object.get('pubTimeStamp'))).fromNow()
-                            })
+                            });
                         }
                         redisClient.setAsync(category, JSON.stringify(items));
                         redisClient.expire(category, 60);
@@ -74,7 +95,7 @@ var item = {
                         return items.slice(start, start + amount);
                     })
                 }
-            })
+            });
             // var itemQuery = new AV.Query(Item);
             // itemQuery.greaterThan("createdAt", new Date("2015-06-26 18:37:09"));
             // if (category != 'all') {
@@ -117,7 +138,7 @@ var item = {
                             publisher_name: result[0].get('publisher_name'),
                             publisher_id: result[0].get('publisher_id'),
                             pubTime: moment(parseInt(result[0].get('pubTimeStamp'))).format('YYYY/MM/DD HH:mm:ss')
-                        }
+                        };
                         redisClient.setAsync(pubTimeStamp.toString(), JSON.stringify(item));
                         redisClient.expire(pubTimeStamp.toString(), 600);
                         return item;

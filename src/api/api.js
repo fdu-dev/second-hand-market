@@ -10,4 +10,4 @@ module.exports = {
     comment: comment,
     notification: notification,
     upload: upload
-}
+};
