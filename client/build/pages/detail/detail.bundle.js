@@ -31204,8 +31204,10 @@
 	                })
 	            }
 	            var item = {
-	                search: function(keyword) {
+	                search: function(start, amount, keyword) {
 	                    var params = {
+	                        start: start,
+	                        amount: amount,
 	                        keyword: keyword
 	                    };
 	                    return GET('/api/item/search', params);
@@ -36783,10 +36785,10 @@
 	            if($scope.items.length === 0 ){
 	                $scope.noItemIsShow = true;
 	            }
-	        }
+	        };
 
 	        if (isKeyword) {
-	            dataSearchSource(category).then(dealResult);
+	            dataSearchSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
 	        } else {
 	            dataSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
 	            now++;

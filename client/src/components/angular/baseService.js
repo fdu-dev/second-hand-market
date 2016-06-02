@@ -18,8 +18,10 @@ angular.module('baseService', [])
                 })
             }
             var item = {
-                search: function(keyword) {
+                search: function(start, amount, keyword) {
                     var params = {
+                        start: start,
+                        amount: amount,
                         keyword: keyword
                     };
                     return GET('/api/item/search', params);

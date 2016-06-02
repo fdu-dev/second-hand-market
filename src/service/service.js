@@ -63,7 +63,6 @@ var item = {
                     }
                     redisClient.setAsync(redis_keyword, JSON.stringify(items));
                     redisClient.expire(redis_keyword, 60);
-                    console.log("草草擦嗷嗷操草草草草熬从"+items);
                     return items.slice(start, start + amount);
                 })
             }
