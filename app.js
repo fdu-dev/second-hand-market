@@ -56,7 +56,7 @@ app.get('/usermanage/', render.usermanage);
 
 //API
 //商品API
-app.get('/api/item/search', api.item.search);
+app.get('/api/item/search', api.item.advanced_search);
 app.get('/api/item/collection', api.item.collection);
 app.post('/api/item/publish', api.item.publish);
 app.post('/api/item/equal_to', api.item.equalTo);

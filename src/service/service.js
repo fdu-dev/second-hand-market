@@ -22,6 +22,53 @@ setInterval(function() {
 }, 60000);
 
 var item = {
+    advanced_search: function(params) {
+        var keyword = params.keyword;
+        var amount = parseInt(params.amount);
+        var start = parseInt(params.start);
+        var redis_keyword = 'search_'+keyword;
+        return redisClient.getAsync(redis_keyword).then(function(value) {
+            if (value) {
+                var collection = JSON.parse(value);
+                return Promise.resolve(collection.slice(start, start + amount));
+            } else {
+                var itemQuery = new AV.SearchQuery(Item);
+                itemQuery.greaterThan("createdAt", new Date("2015-06-26 18:37:09"));
+                itemQuery.notContainedIn("status", ["saled", "undercarriage"]);
+                itemQuery.descending("pubTimeStamp");
+                itemQuery.limit(1000);
+                return itemQuery.find().then(function(results) {
+                    var items = [];
+                    for (var i = 0; i < results.length; i++) {
+                        var object = results[i];
+                        var thumbnail = [];
+                        object.get('imgPaths').forEach(function(path){
+                            // 'img/file-123214341' => 'img/small/file-123214341'
+                            var thumbnailPath = path.replace(/img\/file/g,'img/small/file');
+                            thumbnail.push(thumbnailPath);
+                        });
+                        items.push({
+                            image: object.get('imgPaths'),
+                            thumbnail:thumbnail,
+                            price: object.get('price'),
+                            name: object.get('name'),
+                            location: object.get('location'),
+                            publisher_id: object.get('publisher_id'),
+                            publisher_name: object.get('publisher_name'),
+                            pubTimeStamp: object.get('pubTimeStamp'),
+                            pubTime: moment(parseInt(object.get('pubTimeStamp'))).fromNow()
+                        });
+                    }
+                    redisClient.setAsync(redis_keyword, JSON.stringify(items));
+                    redisClient.expire(redis_keyword, 60);
+                    // console.log(items);
+                    return items.slice(start, start + amount);
+                })
+            }
+        });
+    },
+
+
     search: function(params) {
         //使用 leancloud 自带的 应用内搜索
         var keyword = params.keyword;

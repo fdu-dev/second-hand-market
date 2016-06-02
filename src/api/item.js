@@ -11,6 +11,17 @@ function sendErr(res, message) {
 }
 
 var item = {
+
+    advanced_search: function(req, res) {
+        service.item.advanced_search(req.query)
+          .then(function(results) {
+              res.send(results)
+          }, function(err) {
+              sendErr(res, err);
+          });
+
+    },
+
     // 'api/item/search' GET
     search: function(req, res) {
         var get_for_search = function(stamp) {
