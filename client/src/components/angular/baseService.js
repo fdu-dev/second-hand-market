@@ -24,8 +24,6 @@ angular.module('baseService', [])
                     };
                     return GET('/api/item/search', params);
                 },
-
-
                 get: function(id) {
                     var params = {
                         id: id

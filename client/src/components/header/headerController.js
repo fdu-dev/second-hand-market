@@ -110,5 +110,9 @@ module.exports = ['$scope', 'BaseService', '$rootScope', 'UserInfo', '$interval'
         $scope.showChangeName = function() {
             $rootScope.$broadcast('showChangeName');
         }
+        $scope.search = function() {
+            if($scope.keyword)
+                window.location.href = "/category/" + $scope.keyword;
+        }
     }
 ]

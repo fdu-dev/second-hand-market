@@ -2,6 +2,7 @@ require('../waterfoo/ng-infinite-scroll.min.js');
 module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($scope, BaseService, $location, $rootScope) {
 
     var dataSource = BaseService.waterfoo.getItem;
+    var dataSearchSource = BaseService.item.search;
     if (window.location.pathname == '/usermanage/') {
         $scope.waterfooListIsShow = true;
         dataSource = BaseService.waterfoo.getItemInUsermanage;
@@ -19,6 +20,7 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
     //运动棋牌 - sport
     //票券小物 - smallthing
     var category;
+    var isKeyword = false;
     switch (window.location.pathname) {
         case '/category/digital':
             category = '闲置数码'
@@ -41,13 +43,21 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
         case '/category/smallthing':
             category = '票券小物'
             break;
-        default:
+        case '/category/all':
             category = 'all'
+            break;
+        default:
+            var paths = window.location.pathname.split('/');
+            category = paths[paths.length - 1];
+            isKeyword = true;
+            break;
     }
 
     $scope.getItem = function() {
         $scope.isBusy = $scope.loaderShow = true;
-        dataSource(now * everyPullAmount, everyPullAmount, category).then(function(result) {
+
+        var dealResult = function(result) {
+            console.log('haha');
             if (result.data.length === 0) {
                 $scope.isBusy = true;
                 $scope.loaderShow = false;
@@ -58,8 +68,14 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
             if($scope.items.length === 0 ){
                 $scope.noItemIsShow = true;
             }
-        });
-        now++;
+        }
+
+        if (isKeyword) {
+            dataSearchSource(category).then(dealResult);
+        } else {
+            dataSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
+            now++;
+        }
     }
 
 
