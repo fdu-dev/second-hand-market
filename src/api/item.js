@@ -14,7 +14,7 @@ var item = {
     // 'api/item/search' GET
     search: function(req, res) {
         var get_for_search = function(stamp) {
-            service.item.get(stamp)
+            return service.item.get(stamp)
               .then(function(item) {
                   return item;
               }, function(err) {
@@ -25,6 +25,7 @@ var item = {
 
         service.item.search(req.query)
           .then(function(results) {
+
               var promise_array = _.map(results,  function (pubTimeStamp) {
                   return get_for_search(pubTimeStamp);
               });

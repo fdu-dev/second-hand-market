@@ -26,18 +26,17 @@ var item = {
         //使用 leancloud 自带的 应用内搜索
         var keyword = params.keyword;
         var query = new AV.SearchQuery('Item');
+
         query.queryString(keyword);
-        query.find().then(function(results) {
+        return query.find().then(function(results) {
             if (results.length > 0) {
-                return _.map(results, (o) => {
+                return _.map(results, function (o)  {
                     return o.get('pubTimeStamp');
                 });
+
             } else {
                 return false;
             }
-        }).catch(function(err){
-            //处理 err
-            console.log('error happens in search');
         });
     },
 
