@@ -26,17 +26,19 @@ var item = {
         var keyword = params.keyword;
         var amount = parseInt(params.amount);
         var start = parseInt(params.start);
-        var redis_keyword = 'search_'+keyword;
+        var redis_keyword = keyword;
         return redisClient.getAsync(redis_keyword).then(function(value) {
+
             if (value) {
                 var collection = JSON.parse(value);
                 return Promise.resolve(collection.slice(start, start + amount));
             } else {
-                var itemQuery = new AV.SearchQuery(Item);
-                itemQuery.greaterThan("createdAt", new Date("2015-06-26 18:37:09"));
-                itemQuery.notContainedIn("status", ["saled", "undercarriage"]);
-                itemQuery.descending("pubTimeStamp");
-                itemQuery.limit(1000);
+                var itemQuery = new AV.SearchQuery('Item');
+                itemQuery.queryString(keyword);
+                // itemQuery.greaterThan("createdAt", new Date("2015-06-26 18:37:09"));
+                // itemQuery.notContainedIn("status", ["saled", "undercarriage"]);
+                // itemQuery.descending("pubTimeStamp");
+                // itemQuery.limit(1000);
                 return itemQuery.find().then(function(results) {
                     var items = [];
                     for (var i = 0; i < results.length; i++) {
@@ -61,7 +63,7 @@ var item = {
                     }
                     redisClient.setAsync(redis_keyword, JSON.stringify(items));
                     redisClient.expire(redis_keyword, 60);
-                    // console.log(items);
+                    console.log("草草擦嗷嗷操草草草草熬从"+items);
                     return items.slice(start, start + amount);
                 })
             }
