@@ -48,7 +48,8 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
             break;
         default:
             var paths = window.location.pathname.split('/');
-            category = paths[paths.length - 1];
+            category = decodeURI(paths[paths.length - 1]);
+            console.log(category);
             isKeyword = true;
             break;
     }
@@ -57,7 +58,6 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
         $scope.isBusy = $scope.loaderShow = true;
 
         var dealResult = function(result) {
-            console.log('haha');
             if (result.data.length === 0) {
                 $scope.isBusy = true;
                 $scope.loaderShow = false;
@@ -71,7 +71,8 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
         }
 
         if (isKeyword) {
-            dataSearchSource(category).then(dealResult);
+            dataSearchSource(now * everyPullAmount, everyPullAmount,category).then(dealResult);
+            now++;
         } else {
             dataSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
             now++;
