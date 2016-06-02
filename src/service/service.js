@@ -138,7 +138,7 @@ var item = {
                         }
                         redisClient.setAsync(category, JSON.stringify(items));
                         redisClient.expire(category, 60);
-                        console.log(items);
+                        // console.log(items);
                         return items.slice(start, start + amount);
                     })
                 }
