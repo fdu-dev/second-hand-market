@@ -68,10 +68,10 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
             if($scope.items.length === 0 ){
                 $scope.noItemIsShow = true;
             }
-        }
+        };
 
         if (isKeyword) {
-            dataSearchSource(now * everyPullAmount, everyPullAmount,category).then(dealResult);
+            dataSearchSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
             now++;
         } else {
             dataSource(now * everyPullAmount, everyPullAmount, category).then(dealResult);
