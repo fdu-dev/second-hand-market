@@ -47,9 +47,9 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
             category = 'all'
             break;
         default:
+            // 不属于上述的分类,当做关键词
             var paths = window.location.pathname.split('/');
             category = decodeURI(paths[paths.length - 1]);
-            console.log(category);
             isKeyword = true;
             break;
     }
