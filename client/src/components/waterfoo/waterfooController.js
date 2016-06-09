@@ -46,6 +46,9 @@ module.exports = ['$scope', 'BaseService', '$location', '$rootScope', function($
         case '/category/all':
             category = 'all'
             break;
+        case '/usermanage/': // 我发布的商品
+            category = ''
+            break
         default:
             // 不属于上述的分类,当做关键词
             var paths = window.location.pathname.split('/');
