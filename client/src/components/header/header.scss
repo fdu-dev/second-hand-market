@@ -12,8 +12,10 @@
         left: 50%;
         margin-left: -150px;
         margin-top: -68px;
-        .material-icons {
+        .iconfont {
             color: #444;
+            display: inline-block;
+            cursor: pointer;
         }
     }
     a {

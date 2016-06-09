@@ -10,8 +10,7 @@ div.header.stark-components.navbar-fixed(ng-controller="headerController")
                     div.input-field
                         input#search(type="search",ng-model="keyword",placeholder="搜点什么吧233..." required)
                         label(for="search")
-                            i.material-icons search
-                        i.material-icons(ng-click="search()") trending_flat
+                            i.iconfont(ng-click="search()") &#xe607;
             ul.right
                 - if(session.login)
                     - if(session.emailVerified)
