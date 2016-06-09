@@ -5,3 +5,4 @@ client/node_modules/
 src/service/setting.js
 dump.rdb
 redis-3.0.5/
+client/build/pages/
