@@ -81,7 +81,7 @@ var item = {
     search: function(params) {
         //使用 leancloud 自带的 应用内搜索
         var keyword = params.keyword;
-        var query = new AV.SearchQuery('Item');
+        var query = new AV.SearchQuery('Item');;
 
         query.queryString(keyword);
         return query.find().then(function(results) {
