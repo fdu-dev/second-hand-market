@@ -17,9 +17,15 @@ var fs = Promise.promisifyAll(require("fs"));
 var itemGetCache = {};
 var itemGetTodayNewItemAmountCache = false;
 setInterval(function() {
-    console.log('flush!!!!!!');
+    //console.log('flush!!!!!!');
     itemGetTodayNewItemAmountCache = false;
 }, 60000);
+
+var compare=function(a,b){
+    return b.get('pubTimeStamp')-a.get('pubTimeStamp');
+}
+
+
 
 var item = {
     advanced_search: function(params) {
@@ -41,11 +47,13 @@ var item = {
                 // itemQuery.limit(1000);
                 return itemQuery.find().then(function(results) {
                     var items = [];
+                    results.sort(compare);
                     for (var i = 0; i < results.length; i++) {
+                                   
                         var object = results[i];
                         var thumbnail = [];
+                        if(object.get('status')=='undercarriage') continue;
                         object.get('imgPaths').forEach(function(path){
-                            // 'img/file-123214341' => 'img/small/file-123214341'
                             var thumbnailPath = path.replace(/img\/file/g,'img/small/file');
                             thumbnail.push(thumbnailPath);
                         });
@@ -105,7 +113,6 @@ var item = {
                     var collection = JSON.parse(value);
                     return Promise.resolve(collection.slice(start, start + amount));
                 } else {
-                    console.log('api!!!!!!!!!!!!!!!!!!');
                     var itemQuery = new AV.Query(Item);
                     itemQuery.greaterThan("createdAt", new Date("2015-06-26 18:37:09"));
                     if (category != 'all') {
@@ -116,6 +123,7 @@ var item = {
                     itemQuery.limit(1000);
                     return itemQuery.find().then(function(results) {
                         var items = [];
+                        //console.log(results);
                         for (var i = 0; i < results.length; i++) {
                             var object = results[i];
                             var thumbnail = [];
@@ -138,7 +146,7 @@ var item = {
                         }
                         redisClient.setAsync(category, JSON.stringify(items));
                         redisClient.expire(category, 60);
-                        // console.log(items);
+                        // //console.log(items);
                         return items.slice(start, start + amount);
                     })
                 }
@@ -158,11 +166,11 @@ var item = {
         //使用缓存
         return redisClient.getAsync(pubTimeStamp.toString()).then(function(value) {
             if (value && value != 'updated') {
-                console.log('use cache:' + pubTimeStamp);
+                ////console.log('use cache:' + pubTimeStamp);
                 var item = value == 'none' ? false : JSON.parse(value);
                 return Promise.resolve(item);
             } else {
-                console.log('use api:' + pubTimeStamp);
+                ////console.log('use api:' + pubTimeStamp);
                 var itemQuery = new AV.Query(Item);
                 itemQuery.equalTo("pubTimeStamp", parseInt(pubTimeStamp));
                 return itemQuery.find().then(function(result) {
@@ -200,10 +208,10 @@ var item = {
             }
         });
         // if (itemGetCache[pubTimeStamp]) {
-        //     console.log('use cache:' + itemGetCache[pubTimeStamp]);
+        //     //console.log('use cache:' + itemGetCache[pubTimeStamp]);
         //     return Promise.resolve(itemGetCache[pubTimeStamp]);
         // } else {
-        //     console.log('use api');
+        //     //console.log('use api');
         //     var itemQuery = new AV.Query(Item);
         //     itemQuery.equalTo("pubTimeStamp", parseInt(pubTimeStamp));
         //     itemQuery.find().then(function(result) {
@@ -252,10 +260,10 @@ var item = {
     },
     getTodayNewItemAmount: function() {
         if (itemGetTodayNewItemAmountCache) {
-            console.log('use amount cache');
+            ////console.log('use amount cache');
             return Promise.resolve(itemGetTodayNewItemAmountCache);
         } else {
-            console.log('use amount api');
+            ////console.log('use amount api');
             var date = new Date();
             var dateStr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' 00:00:00';
             var categories = ['电器日用', '校园代步', '闲置数码', '美妆衣物', '图书教材', '运动棋牌', '票券小物'];
@@ -284,7 +292,7 @@ var item = {
 
 var user = {
     signup: function(username, password, name, tel, captcha) {
-        console.log('signup:' + username + '/' + password);
+        ////console.log('signup:' + username + '/' + password);
         var query = new AV.Query(AV.User);
         query.equalTo("username", username.toString());
         return query.find().then(function(result) {
@@ -319,7 +327,7 @@ var user = {
             }
         });
 
-        console.log('service:' + JSON.stringify(params));
+        //console.log('service:' + JSON.stringify(params));
 
     },
     login: function(username, password) {
@@ -346,7 +354,7 @@ var user = {
             });
     },
     getUserByUserId: function(userid) {
-        console.log(userid);
+        //console.log(userid);
         var query = new AV.Query(AV.User);
         query.equalTo("timeStamp", parseInt(userid));
         return query.find()
@@ -412,7 +420,6 @@ var user = {
             })
     }
 };
-
 
 module.exports = {
     item: item,
