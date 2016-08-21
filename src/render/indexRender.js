@@ -10,7 +10,7 @@ setInterval(function() {
     service.item.collection({
         category: 'all',
         start: 0,
-        amount: 9
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.all = items;
@@ -22,7 +22,7 @@ setInterval(function() {
     service.item.collection({
         category: '闲置数码',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.digital = items;
@@ -33,7 +33,7 @@ setInterval(function() {
     service.item.collection({
         category: '校园代步',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.ride = items;
@@ -44,7 +44,7 @@ setInterval(function() {
     service.item.collection({
         category: '电器日用',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.commodity = items;
@@ -55,7 +55,7 @@ setInterval(function() {
     service.item.collection({
         category: '图书教材',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.book = items;
@@ -66,7 +66,7 @@ setInterval(function() {
     service.item.collection({
         category: '美妆衣物',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.makeup = items;
@@ -77,7 +77,7 @@ setInterval(function() {
     service.item.collection({
         category: '运动棋牌',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.sport = items;
@@ -88,7 +88,7 @@ setInterval(function() {
     service.item.collection({
         category: '票券小物',
         start: 0,
-        amount: 6
+        amount: 8
     }).then(function(results) {
         var items = results;
         tmp_cache.smallthing = items;
@@ -123,7 +123,7 @@ function render(req, res) {
         service.item.collection({
             category: 'all',
             start: 0,
-            amount: 9
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.all = items;
@@ -136,7 +136,7 @@ function render(req, res) {
         service.item.collection({
             category: '闲置数码',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.digital = items;
@@ -148,7 +148,7 @@ function render(req, res) {
         service.item.collection({
             category: '校园代步',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.ride = items;
@@ -160,7 +160,7 @@ function render(req, res) {
         service.item.collection({
             category: '电器日用',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.commodity = items;
@@ -172,7 +172,7 @@ function render(req, res) {
         service.item.collection({
             category: '图书教材',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.book = items;
@@ -184,7 +184,7 @@ function render(req, res) {
         service.item.collection({
             category: '美妆衣物',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.makeup = items;
@@ -196,7 +196,7 @@ function render(req, res) {
         service.item.collection({
             category: '运动棋牌',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.sport = items;
@@ -208,7 +208,7 @@ function render(req, res) {
         service.item.collection({
             category: '票券小物',
             start: 0,
-            amount: 6
+            amount: 8
         }).then(function(results) {
             var items = results;
             tmp_cache.smallthing = items;

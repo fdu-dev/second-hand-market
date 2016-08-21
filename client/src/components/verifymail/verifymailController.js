@@ -20,6 +20,7 @@ module.exports = ['$scope', 'BaseService', '$rootScope', function($scope, BaseSe
                         linkText: '现在登录邮箱，立刻激活 >',
                         link: 'http://mail.fudan.edu.cn/'
                     });
+                    $scope.verifyMailIsShow = !$scope.verifyMailIsShow;
                 } else {
                     $rootScope.$broadcast('alert', '哎呀发送失败了 T^T');
                 }

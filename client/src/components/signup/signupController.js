@@ -54,6 +54,7 @@ module.exports = ['$scope', 'BaseService', '$rootScope', function($scope, BaseSe
                     linkText: '进行学邮验证，立即发布商品 >',
                     showVerifyMail: true
                 });
+                $scope.signupIsShow = !$scope.signupIsShow;
             } else {
                 $rootScope.$broadcast('alert', '注册失败');
             }

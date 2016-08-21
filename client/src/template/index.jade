@@ -22,7 +22,7 @@ html(ng-app="starkAPP")
                         ul.slides
                             - for(var i =0;i<data.bannerItem.length;i++){
                                 li
-                                    img(src="#{data.bannerItem[i].coverImage}") 
+                                    img(src="#{data.bannerItem[i].coverImage}")
                                     - if(i%3==0)
                                         div.caption.center-align
                                             a(href="/item/#{data.bannerItem[i].pubTimeStamp}")
@@ -58,8 +58,8 @@ html(ng-app="starkAPP")
                                     div.card-content.item-name
                                         p #{data.all[i].name}
                                     div.card-content.item-location
+                                        p #{data.all[i].pubTime}
                                         p #{data.all[i].location}
-                                        p #{data.all[i].pubTime}         
                         - }
                     - else
                         div 空的哦
@@ -80,8 +80,8 @@ html(ng-app="starkAPP")
                                         div.card-content.item-name
                                             p #{data[category][i].name}
                                         div.card-content.item-location
+                                            p #{data[category][i].pubTime}
                                             p #{data[category][i].location}
-                                            p #{data[category][i].pubTime}           
                             - }
             - }
         script(src="http://s4.cnzz.com/z_stat.php?id=1259433787&web_id=1259433787",language="JavaScript")
